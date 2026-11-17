@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 480" width="100%" height="100%">
+  <defs>
+    <linearGradient id="stepBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#ef4444" />
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <rect width="1100" height="480" rx="14" fill="#0b0f19" stroke="#1e293b" stroke-width="1.5" />
+
+  <!-- Header -->
+  <text x="40" y="38" fill="#f8fafc" font-family="system-ui" font-size="20" font-weight="700">PulseStream &bull; Event Reliability &amp; Processing Lifecycle</text>
+  <text x="40" y="58" fill="#94a3b8" font-family="system-ui" font-size="12">Strict commit discipline: Offsets advance ONLY after durable sink persistence or DLQ broker acknowledgement</text>
+
+  <!-- Step 1: Emitter -->
+  <g transform="translate(30, 90)">
+    <rect width="150" height="110" rx="8" fill="url(#stepBg)" stroke="#38bdf8" stroke-width="1.2" />
+    <circle cx="25" cy="25" r="12" fill="#0284c7" />
+    <text x="25" y="29" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="10" font-weight="bold">1</text>
+    <text x="45" y="28" fill="#e2e8f0" font-family="system-ui" font-size="11" font-weight="bold">Event Creation</text>
+    <text x="15" y="52" fill="#cbd5e1" font-family="system-ui" font-size="9">&bull; UUID event_id</text>
+    <text x="15" y="68" fill="#cbd5e1" font-family="system-ui" font-size="9">&bull; UTC ISO event_time</text>
+    <text x="15" y="84" fill="#cbd5e1" font-family="system-ui" font-size="9">&bull; HTTP method, route,</text>
+    <text x="23" y="98" fill="#cbd5e1" font-family="system-ui" font-size="9">status, duration_ms</text>
+  </g>
+
+  <line x1="180" y1="145" x2="225" y2="145" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+  <!-- Step 2: API Ingestion Gateway -->
+  <g transform="translate(230, 90)">
+    <rect width="180" height="110" rx="8" fill="url(#stepBg)" stroke="#0284c7" stroke-width="1.2" />
+    <circle cx="25" cy="25" r="12" fill="#0284c7" />
+    <text x="25" y="29" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="10" font-weight="bold">2</text>
+    <text x="45" y="28" fill="#e2e8f0" font-family="system-ui" font-size="11" font-weight="bold">API Ingestion Gate</text>
+    <text x="15" y="52" fill="#cbd5e1" font-family="system-ui" font-size="9">&bull; Envelope validation</text>
+    <text x="15" y="68" fill="#ef4444" font-family="system-ui" font-size="9">&bull; Invalid payload -> 4xx</text>
+    <text x="23" y="80" fill="#94a3b8" font-family="system-ui" font-size="8">(Never enters broker!)</text>
+    <text x="15" y="96" fill="#38bdf8" font-family="system-ui" font-size="9">&bull; Publish with acks=all</text>
+  </g>
+
+  <line x1="410" y1="145" x2="455" y2="145" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+  <!-- Step 3: Redpanda Broker -->
+  <g transform="translate(460, 90)">
+    <rect width="170" height="110" rx="8" fill="url(#stepBg)" stroke="#dc2626" stroke-width="1.2" />
+    <circle cx="25" cy="25" r="12" fill="#dc2626" />
+    <text x="25" y="29" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="10" font-weight="bold">3</text>
+    <text x="45" y="28" fill="#e2e8f0" font-family="system-ui" font-size="11" font-weight="bold">Broker Ingress</text>
+    <text x="15" y="52" fill="#cbd5e1" font-family="system-ui" font-size="9">&bull; Partition key hashed</text>
+    <text x="23" y="66" fill="#94a3b8" font-family="system-ui" font-size="8">{service}|{route}</text>
+    <text x="15" y="82" fill="#34d399" font-family="system-ui" font-size="9">&bull; Broker acks to API</text>
+    <text x="15" y="98" fill="#38bdf8" font-family="system-ui" font-size="9">&bull; API returns 202</text>
+  </g>
+
+  <line x1="630" y1="145" x2="675" y2="145" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+  <!-- Step 4: Consumer Processing & Validation Gate -->
+  <g transform="translate(680, 70)">
+    <rect width="190" height="150" rx="8" fill="url(#stepBg)" stroke="#7c3aed" stroke-width="1.2" />
+    <circle cx="25" cy="25" r="12" fill="#7c3aed" />
+    <text x="25" y="29" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="10" font-weight="bold">4</text>
+    <text x="45" y="28" fill="#e2e8f0" font-family="system-ui" font-size="11" font-weight="bold">Consumer Validation</text>
+    <text x="15" y="52" fill="#cbd5e1" font-family="system-ui" font-size="9">&bull; Poll batch (max 500)</text>
+    <text x="15" y="68" fill="#cbd5e1" font-family="system-ui" font-size="9">&bull; Schema &amp; version check</text>
+    <text x="15" y="84" fill="#cbd5e1" font-family="system-ui" font-size="9">&bull; Timestamp UTC norm</text>
+    <text x="15" y="104" fill="#34d399" font-family="system-ui" font-size="9" font-weight="bold">&bull; Valid -> ClickHouse Branch</text>
+    <text x="15" y="122" fill="#f87171" font-family="system-ui" font-size="9" font-weight="bold">&bull; Invalid -> DLQ Branch</text>
+    <text x="15" y="138" fill="#94a3b8" font-family="system-ui" font-size="8">Auto-commit STRICTLY false</text>
+  </g>
+
+  <!-- Branch: Valid to ClickHouse (Green Line) -->
+  <path d="M 870 110 L 920 110" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrowGreen)" />
+  <!-- Branch: Invalid to DLQ (Red Line) -->
+  <path d="M 870 170 L 920 170" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowRed)" />
+
+  <!-- Step 5A: Valid Persistence (ClickHouse) -->
+  <g transform="translate(925, 70)">
+    <rect width="150" height="70" rx="8" fill="url(#stepBg)" stroke="#10b981" stroke-width="1.2" />
+    <text x="15" y="24" fill="#34d399" font-family="system-ui" font-size="10" font-weight="bold">5A. ClickHouse Insert</text>
+    <text x="15" y="42" fill="#cbd5e1" font-family="system-ui" font-size="8">&bull; Insert raw batch</text>
+    <text x="15" y="56" fill="#cbd5e1" font-family="system-ui" font-size="8">&bull; Retry with backoff if down</text>
+  </g>
+
+  <!-- Step 5B: DLQ Persistence -->
+  <g transform="translate(925, 150)">
+    <rect width="150" height="70" rx="8" fill="url(#stepBg)" stroke="#ef4444" stroke-width="1.2" />
+    <text x="15" y="24" fill="#f87171" font-family="system-ui" font-size="10" font-weight="bold">5B. DLQ Broker Route</text>
+    <text x="15" y="42" fill="#cbd5e1" font-family="system-ui" font-size="8">&bull; Publish failure metadata</text>
+    <text x="15" y="56" fill="#cbd5e1" font-family="system-ui" font-size="8">&bull; Wait for DLQ broker ack</text>
+  </g>
+
+  <!-- Step 6: Offset Commit Bar (The Core Guarantee) -->
+  <g transform="translate(30, 270)">
+    <rect width="1045" height="90" rx="10" fill="#1e1b4b" stroke="#818cf8" stroke-width="1.5" />
+    <circle cx="30" cy="30" r="14" fill="#4f46e5" />
+    <text x="30" y="35" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="11" font-weight="bold">6</text>
+    <text x="56" y="34" fill="#e0e7ff" font-family="system-ui" font-size="13" font-weight="bold">Contiguous Manual Offset Commit Gate</text>
+    
+    <text x="30" y="60" fill="#c7d2fe" font-family="system-ui" font-size="10">
+      &bull; Source partition offset is committed <tspan font-weight="bold" fill="#34d399">ONLY AFTER</tspan> valid batch is confirmed by ClickHouse OR invalid record is acknowledged by DLQ.
+    </text>
+    <text x="30" y="76" fill="#c7d2fe" font-family="system-ui" font-size="10">
+      &bull; Contiguous offset tracking: If message N fails or is retrying, offset N+1 is <tspan font-weight="bold" fill="#f87171">NEVER COMMITTED</tspan>. Consumer lag grows safely; zero data loss.
+    </text>
+  </g>
+
+  <!-- Step 7: dbt Transformation (Marts) -->
+  <g transform="translate(30, 380)">
+    <rect width="1045" height="75" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.2" />
+    <circle cx="30" cy="25" r="14" fill="#0284c7" />
+    <text x="30" y="30" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="11" font-weight="bold">7</text>
+    <text x="56" y="28" fill="#e2e8f0" font-family="system-ui" font-size="12" font-weight="bold">Analytical Reconciliation &amp; dbt Modeling</text>
+    <text x="30" y="52" fill="#94a3b8" font-family="system-ui" font-size="10">
+      dbt filters physical sink retries &bull; Enforces 7-day logical event_id uniqueness &bull; Replaces 1-minute UTC partitions via insert_overwrite &bull; Flags late data (>15m)
+    </text>
+  </g>
+</svg>

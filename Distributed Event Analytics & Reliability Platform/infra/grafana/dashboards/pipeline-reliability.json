@@ -1,0 +1,275 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "title": "Ingestion & Broker Telemetry",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "axisCenteredZero": false, "axisLabel": "req/sec", "drawStyle": "line", "fillOpacity": 15 },
+          "unit": "reqps"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 1 },
+      "id": 2,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" } },
+      "title": "Ingestion Requests: Accepted (202) vs Rejected (4xx)",
+      "description": "Distinguishes external API validation rejection (4xx) from broker DLQ records",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum by (result) (rate(pulsestream_ingest_requests_total[1m]))",
+          "legendFormat": "Outcome: {{result}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "axisCenteredZero": false, "axisLabel": "seconds", "drawStyle": "line" },
+          "unit": "s"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 1 },
+      "id": 3,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" } },
+      "title": "Broker Publish Duration (p95 Latency)",
+      "description": "Round-trip acknowledgement latency from Redpanda broker",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum by (le, topic) (rate(pulsestream_publish_duration_seconds_bucket[1m])))",
+          "legendFormat": "{{topic}} p95",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 8 },
+      "id": 4,
+      "title": "Consumer Health, Throughput & Lag",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "axisCenteredZero": false, "axisLabel": "records/sec", "drawStyle": "line", "fillOpacity": 20 },
+          "unit": "short"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 9 },
+      "id": 5,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" } },
+      "title": "Consumer Processing Rate by Outcome",
+      "description": "Records processed per second (valid deliveries, DLQ routing, failures)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum by (outcome) (rate(pulsestream_consumer_records_total[1m]))",
+          "legendFormat": "{{outcome}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 100 },
+              { "color": "red", "value": 1000 }
+            ]
+          },
+          "custom": { "axisCenteredZero": false, "axisLabel": "Lag (messages)", "drawStyle": "line", "fillOpacity": 25 },
+          "unit": "short"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 9 },
+      "id": 6,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" } },
+      "title": "Consumer Lag by Partition",
+      "description": "Latest broker high-watermark offset minus committed offset (per partition)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "pulsestream_consumer_lag",
+          "legendFormat": "Partition {{partition}} ({{consumer_group}})",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 16 },
+      "id": 7,
+      "title": "Dead-Letter Queue (DLQ), Retries & Storage Resilience",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "axisCenteredZero": false, "axisLabel": "Count", "drawStyle": "bars" },
+          "unit": "short"
+        }
+      },
+      "gridPos": { "h": 7, "w": 8, "x": 0, "y": 17 },
+      "id": 8,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" } },
+      "title": "DLQ Published Records by Failure Code",
+      "description": "Broker records routed to application-events-dlq due to schema/validation errors",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum by (failure_code) (increase(pulsestream_dlq_published_total[1m]))",
+          "legendFormat": "{{failure_code}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "axisCenteredZero": false, "axisLabel": "Retries", "drawStyle": "line" },
+          "unit": "short"
+        }
+      },
+      "gridPos": { "h": 7, "w": 8, "x": 8, "y": 17 },
+      "id": 9,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" } },
+      "title": "ClickHouse Sink Write Retries & Errors",
+      "description": "Tracks transient sink backoff attempts and write failure recovery",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum by (dependency) (rate(pulsestream_retries_total[1m]))",
+          "legendFormat": "Retries: {{dependency}}",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(pulsestream_clickhouse_write_errors_total[1m])",
+          "legendFormat": "ClickHouse Errors",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "axisCenteredZero": false, "axisLabel": "Latency (s)", "drawStyle": "line" },
+          "unit": "s"
+        }
+      },
+      "gridPos": { "h": 7, "w": 8, "x": 16, "y": 17 },
+      "id": 10,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" } },
+      "title": "Processing Delay (p50 / p95) & Clock Skew",
+      "description": "Time elapsed between application request completion and consumer processing",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(pulsestream_processing_delay_seconds_bucket[1m])))",
+          "legendFormat": "Delay p50 (s)",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(pulsestream_processing_delay_seconds_bucket[1m])))",
+          "legendFormat": "Delay p95 (s)",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 24 },
+      "id": 11,
+      "title": "Freshness & Analytics Runner Heartbeat",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 60 },
+              { "color": "red", "value": 300 }
+            ]
+          },
+          "unit": "s"
+        }
+      },
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 25 },
+      "id": 12,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "values": false } },
+      "title": "Seconds Since Last Successful Consumer Batch Commit",
+      "description": "time() - pulsestream_last_successful_processing_timestamp_seconds",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "time() - pulsestream_last_successful_processing_timestamp_seconds",
+          "legendFormat": "{{consumer}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "unit": "s"
+        }
+      },
+      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 25 },
+      "id": 13,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" } },
+      "title": "dbt Analytics Build Duration & Freshness",
+      "description": "Duration in seconds of serialized micro-batch dbt runs",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "pulsestream_analytics_build_duration_seconds",
+          "legendFormat": "Build Duration",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["pulsestream", "reliability", "pipeline"],
+  "time": { "from": "now-1h", "to": "now" },
+  "timezone": "utc",
+  "title": "PulseStream - Pipeline Reliability"
+}

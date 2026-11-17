@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 680" width="100%" height="100%">
+  <defs>
+    <linearGradient id="boxBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="apiHeader" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="brokerHeader" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#dc2626" />
+      <stop offset="100%" stop-color="#b91c1c" />
+    </linearGradient>
+    <linearGradient id="consumerHeader" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#6d28d9" />
+    </linearGradient>
+    <linearGradient id="storageHeader" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="dbtHeader" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ea580c" />
+      <stop offset="100%" stop-color="#c2410c" />
+    </linearGradient>
+    <linearGradient id="vizHeader" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#fbbf24" />
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#f87171" />
+    </marker>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1100" height="680" rx="14" fill="#0b0f19" stroke="#1e293b" stroke-width="1.5" />
+
+  <!-- Diagram Title Header -->
+  <text x="40" y="44" fill="#f8fafc" font-family="system-ui" font-size="22" font-weight="700">PulseStream &bull; Technical Architecture &amp; Component Flow</text>
+  <text x="40" y="68" fill="#94a3b8" font-family="system-ui" font-size="13">End-to-end telemetry lifecycle from distributed microservice emitters to dbt analytical marts and Grafana</text>
+
+  <!-- COLUMN 1: Emitters (Load Generator & Microservices) -->
+  <g transform="translate(40, 100)">
+    <rect width="180" height="150" rx="10" fill="url(#boxBg)" stroke="#334155" stroke-width="1.2" />
+    <rect width="180" height="32" rx="10" fill="#334155" />
+    <rect y="22" width="180" height="10" fill="#334155" />
+    <text x="90" y="21" text-anchor="middle" fill="#f8fafc" font-family="system-ui" font-size="12" font-weight="600">Simulated Telemetry</text>
+    <text x="20" y="58" fill="#e2e8f0" font-family="system-ui" font-size="11" font-weight="600">&bull; order-service</text>
+    <text x="20" y="78" fill="#e2e8f0" font-family="system-ui" font-size="11" font-weight="600">&bull; payment-service</text>
+    <text x="20" y="98" fill="#e2e8f0" font-family="system-ui" font-size="11" font-weight="600">&bull; user-service</text>
+    <text x="20" y="118" fill="#e2e8f0" font-family="system-ui" font-size="11" font-weight="600">&bull; inventory-service</text>
+    <text x="20" y="138" fill="#38bdf8" font-family="system-ui" font-size="10">Load Generator CLI</text>
+  </g>
+
+  <!-- Flow 1 -> 2 Arrow -->
+  <line x1="220" y1="175" x2="275" y2="175" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+  <text x="248" y="165" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="9">POST /v1/events</text>
+
+  <!-- COLUMN 2: FastAPI Ingestion -->
+  <g transform="translate(280, 100)">
+    <rect width="190" height="150" rx="10" fill="url(#boxBg)" stroke="#0284c7" stroke-width="1.2" />
+    <rect width="190" height="32" rx="10" fill="url(#apiHeader)" />
+    <rect y="22" width="190" height="10" fill="url(#apiHeader)" />
+    <text x="95" y="21" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="12" font-weight="600">FastAPI Ingestion API</text>
+    <text x="15" y="55" fill="#f1f5f9" font-family="system-ui" font-size="11">&bull; Pydantic v1 validation</text>
+    <text x="15" y="75" fill="#f87171" font-family="system-ui" font-size="11">&bull; 4xx Rejection (Invalid)</text>
+    <text x="15" y="95" fill="#38bdf8" font-family="system-ui" font-size="11">&bull; Partition Key derivation</text>
+    <text x="25" y="110" fill="#94a3b8" font-family="system-ui" font-size="10">{service}|{route}</text>
+    <text x="15" y="132" fill="#34d399" font-family="system-ui" font-size="11">&bull; 202 Accepted on broker ack</text>
+  </g>
+
+  <!-- Flow 2 -> 3 Arrow -->
+  <line x1="470" y1="175" x2="525" y2="175" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+  <text x="498" y="165" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="9">acks=all</text>
+
+  <!-- COLUMN 3: Redpanda Broker -->
+  <g transform="translate(530, 80)">
+    <rect width="220" height="200" rx="10" fill="url(#boxBg)" stroke="#dc2626" stroke-width="1.2" />
+    <rect width="220" height="32" rx="10" fill="url(#brokerHeader)" />
+    <rect y="22" width="220" height="10" fill="url(#brokerHeader)" />
+    <text x="110" y="21" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="12" font-weight="600">Redpanda Event Broker</text>
+    
+    <!-- Topic 1 -->
+    <rect x="15" y="45" width="190" height="60" rx="6" fill="#1e1b4b" stroke="#6366f1" stroke-width="0.8" />
+    <text x="25" y="62" fill="#e0e7ff" font-family="system-ui" font-size="10" font-weight="bold">application-events</text>
+    <text x="25" y="78" fill="#a5b4fc" font-family="system-ui" font-size="9">3 Partitions (P0, P1, P2)</text>
+    <text x="25" y="94" fill="#a5b4fc" font-family="system-ui" font-size="9">Retention: 7 days &bull; RF=1</text>
+
+    <!-- Topic 2: DLQ -->
+    <rect x="15" y="118" width="190" height="52" rx="6" fill="#450a0a" stroke="#f87171" stroke-width="0.8" />
+    <text x="25" y="135" fill="#fecaca" font-family="system-ui" font-size="10" font-weight="bold">application-events-dlq</text>
+    <text x="25" y="152" fill="#fca5a5" font-family="system-ui" font-size="9">Dead-letter queue for invalid payload</text>
+  </g>
+
+  <!-- Flow 3 -> 4 Arrow (Valid events) -->
+  <line x1="750" y1="130" x2="815" y2="130" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+  <!-- Flow 3 -> 4 Arrow (DLQ) -->
+  <line x1="750" y1="210" x2="815" y2="210" stroke="#f87171" stroke-width="2" marker-end="url(#arrowRed)" />
+
+  <!-- COLUMN 4: Python Consumer Workers -->
+  <g transform="translate(820, 80)">
+    <rect width="240" height="200" rx="10" fill="url(#boxBg)" stroke="#7c3aed" stroke-width="1.2" />
+    <rect width="240" height="32" rx="10" fill="url(#consumerHeader)" />
+    <rect y="22" width="240" height="10" fill="url(#consumerHeader)" />
+    <text x="120" y="21" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="12" font-weight="600">Python Consumer Groups</text>
+    
+    <!-- Worker 1 -->
+    <text x="15" y="55" fill="#f5d0fe" font-family="system-ui" font-size="11" font-weight="bold">pulsestream-event-processors</text>
+    <text x="15" y="72" fill="#cbd5e1" font-family="system-ui" font-size="10">&bull; Manual commits (no auto-commit)</text>
+    <text x="15" y="88" fill="#cbd5e1" font-family="system-ui" font-size="10">&bull; Bounded batch (max 500 records)</text>
+    <text x="15" y="104" fill="#cbd5e1" font-family="system-ui" font-size="10">&bull; Contiguous offset tracking</text>
+
+    <!-- Worker 2 -->
+    <text x="15" y="132" fill="#fca5a5" font-family="system-ui" font-size="11" font-weight="bold">pulsestream-dlq-archiver</text>
+    <text x="15" y="148" fill="#cbd5e1" font-family="system-ui" font-size="10">&bull; Consumes DLQ broker topic</text>
+    <text x="15" y="164" fill="#cbd5e1" font-family="system-ui" font-size="10">&bull; Persists to ClickHouse archive</text>
+  </g>
+
+  <!-- Flow 4 -> ClickHouse Arrow (Downward) -->
+  <path d="M 940 280 L 940 340 L 730 340" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+  <text x="830" y="330" fill="#94a3b8" font-family="system-ui" font-size="9">Batch Insert (retry on outage)</text>
+
+  <!-- ROW 2: Storage Layer (ClickHouse & PostgreSQL) -->
+  <!-- ClickHouse -->
+  <g transform="translate(390, 310)">
+    <rect width="330" height="160" rx="10" fill="url(#boxBg)" stroke="#d97706" stroke-width="1.2" />
+    <rect width="330" height="32" rx="10" fill="url(#storageHeader)" />
+    <rect y="22" width="330" height="10" fill="url(#storageHeader)" />
+    <text x="165" y="21" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="12" font-weight="600">ClickHouse Columnar Storage (MergeTree)</text>
+    
+    <text x="15" y="55" fill="#fef3c7" font-family="system-ui" font-size="11" font-weight="bold">&bull; raw_event_deliveries</text>
+    <text x="25" y="70" fill="#cbd5e1" font-family="system-ui" font-size="10">Grain: 1 sink row / broker attempt (topic, partition, offset)</text>
+    <text x="25" y="86" fill="#94a3b8" font-family="system-ui" font-size="10">PARTITION BY toYYYYMM(event_time)</text>
+
+    <text x="15" y="112" fill="#fecaca" font-family="system-ui" font-size="11" font-weight="bold">&bull; raw_dlq_records</text>
+    <text x="25" y="127" fill="#cbd5e1" font-family="system-ui" font-size="10">Grain: 1 DLQ sink insert (dlq_topic, dlq_part, dlq_offset)</text>
+    <text x="25" y="143" fill="#94a3b8" font-family="system-ui" font-size="10">PARTITION BY toYYYYMM(failed_at)</text>
+  </g>
+
+  <!-- PostgreSQL -->
+  <g transform="translate(40, 310)">
+    <rect width="290" height="160" rx="10" fill="url(#boxBg)" stroke="#0284c7" stroke-width="1.2" />
+    <rect width="290" height="32" rx="10" fill="#0369a1" />
+    <rect y="22" width="290" height="10" fill="#0369a1" />
+    <text x="145" y="21" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="12" font-weight="600">PostgreSQL (Relational Metadata)</text>
+    
+    <text x="15" y="55" fill="#bae6fd" font-family="system-ui" font-size="11" font-weight="bold">&bull; services (PK: service_id, UK: service_name)</text>
+    <text x="25" y="72" fill="#cbd5e1" font-family="system-ui" font-size="10">Natural conformed key across stack</text>
+    <text x="15" y="100" fill="#bae6fd" font-family="system-ui" font-size="11" font-weight="bold">&bull; stream_settings (PK: setting_key)</text>
+    <text x="25" y="118" fill="#cbd5e1" font-family="system-ui" font-size="10">Dynamic stream defaults &amp; policies</text>
+    <text x="15" y="145" fill="#f87171" font-family="system-ui" font-size="10">&bull; No cross-db physical FKs (checked in dbt)</text>
+  </g>
+
+  <!-- Flow ClickHouse -> dbt Arrow (Downward) -->
+  <line x1="555" y1="470" x2="555" y2="515" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)" />
+  <text x="565" y="495" fill="#fbbf24" font-family="system-ui" font-size="9">Micro-batch refresh (1 min)</text>
+
+  <!-- ROW 3: dbt Analytics Engine -->
+  <g transform="translate(390, 520)">
+    <rect width="330" height="130" rx="10" fill="url(#boxBg)" stroke="#ea580c" stroke-width="1.2" />
+    <rect width="330" height="30" rx="10" fill="url(#dbtHeader)" />
+    <rect y="20" width="330" height="10" fill="url(#dbtHeader)" />
+    <text x="165" y="20" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="11" font-weight="600">dbt Core + dbt-clickhouse Models</text>
+    
+    <text x="15" y="50" fill="#fed7aa" font-family="system-ui" font-size="10" font-weight="bold">Staging &amp; Intermediate Deduplication:</text>
+    <text x="25" y="66" fill="#cbd5e1" font-family="system-ui" font-size="9">int_broker_delivery_dedup &bull; int_canonical_http_events</text>
+    <text x="15" y="86" fill="#fed7aa" font-family="system-ui" font-size="10" font-weight="bold">Dimensions, Facts &amp; Marts:</text>
+    <text x="25" y="102" fill="#cbd5e1" font-family="system-ui" font-size="9">dim_service &bull; fct_http_requests &bull; fct_service_minute_metrics</text>
+    <text x="25" y="118" fill="#cbd5e1" font-family="system-ui" font-size="9">mart_service_reliability &bull; mart_pipeline_health &bull; mart_late_events</text>
+  </g>
+
+  <!-- Flow dbt -> API & Grafana -->
+  <path d="M 720 585 L 795 585" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- ROW 3 Right: Consumption (Query API & Grafana) -->
+  <g transform="translate(800, 480)">
+    <rect width="260" height="170" rx="10" fill="url(#boxBg)" stroke="#059669" stroke-width="1.2" />
+    <rect width="260" height="30" rx="10" fill="url(#vizHeader)" />
+    <rect y="20" width="260" height="10" fill="url(#vizHeader)" />
+    <text x="130" y="20" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="11" font-weight="600">Observability &amp; Query Layer</text>
+    
+    <text x="15" y="52" fill="#a7f3d0" font-family="system-ui" font-size="10" font-weight="bold">FastAPI Query Endpoints:</text>
+    <text x="25" y="68" fill="#cbd5e1" font-family="system-ui" font-size="9">GET /v1/metrics/services (1m range)</text>
+    <text x="25" y="82" fill="#cbd5e1" font-family="system-ui" font-size="9">GET /v1/metrics/pipeline</text>
+
+    <text x="15" y="104" fill="#a7f3d0" font-family="system-ui" font-size="10" font-weight="bold">Grafana Dashboards:</text>
+    <text x="25" y="120" fill="#cbd5e1" font-family="system-ui" font-size="9">&bull; Service Analytics (t-digest p50/p95/p99)</text>
+    <text x="25" y="134" fill="#cbd5e1" font-family="system-ui" font-size="9">&bull; Pipeline Reliability (lag, retries, DLQ)</text>
+    <text x="15" y="154" fill="#38bdf8" font-family="system-ui" font-size="9">&bull; Prometheus /metrics exposition</text>
+  </g>
+</svg>

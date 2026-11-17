@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <radialGradient id="cyanGlow" cx="20%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="indigoGlow" cx="80%" cy="70%" r="55%">
+      <stop offset="0%" stop-color="#818cf8" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0" />
+    </radialGradient>
+    <!-- Border Gradient -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4" />
+      <stop offset="50%" stop-color="#334155" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0.4" />
+    </linearGradient>
+    <!-- Text Gradients -->
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="40%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#818cf8" />
+    </linearGradient>
+    <linearGradient id="accentBadge" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+    <!-- Pulse Wave Gradient -->
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0" />
+      <stop offset="20%" stop-color="#38bdf8" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#34d399" stop-opacity="1" />
+      <stop offset="80%" stop-color="#818cf8" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0" />
+    </linearGradient>
+    <!-- Pattern Grid -->
+    <pattern id="techGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.8" stroke-opacity="0.6" />
+      <circle cx="40" cy="40" r="1.5" fill="#38bdf8" fill-opacity="0.25" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="420" rx="16" fill="url(#bgGrad)" />
+  <rect width="1200" height="420" rx="16" fill="url(#techGrid)" />
+  <rect width="1200" height="420" rx="16" fill="url(#cyanGlow)" />
+  <rect width="1200" height="420" rx="16" fill="url(#indigoGlow)" />
+  <rect width="1200" height="420" rx="16" fill="none" stroke="url(#borderGrad)" stroke-width="1.5" />
+
+  <!-- Technical Telemetry Pulse Wave (Infographic Motif) -->
+  <g opacity="0.85">
+    <path d="M 50 320 L 250 320 L 290 280 L 320 360 L 350 240 L 380 340 L 410 300 L 440 320 L 700 320 L 730 260 L 760 350 L 790 290 L 820 320 L 1150 320" 
+          fill="none" stroke="url(#waveGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Pulse Nodes -->
+    <circle cx="350" cy="240" r="5" fill="#34d399" />
+    <circle cx="350" cy="240" r="10" fill="#34d399" fill-opacity="0.3" />
+    <circle cx="730" cy="260" r="4.5" fill="#38bdf8" />
+    <circle cx="730" cy="260" r="9" fill="#38bdf8" fill-opacity="0.3" />
+    <circle cx="760" cy="350" r="4.5" fill="#f87171" />
+  </g>
+
+  <!-- Top Category Badge -->
+  <g transform="translate(60, 48)">
+    <rect width="320" height="30" rx="15" fill="url(#accentBadge)" fill-opacity="0.25" stroke="#38bdf8" stroke-width="1.2" stroke-opacity="0.6" />
+    <circle cx="16" cy="15" r="4" fill="#34d399" />
+    <text x="30" y="19" fill="#e2e8f0" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="12" font-weight="600" letter-spacing="1">
+      DISTRIBUTED SYSTEMS &bull; ANALYTICS ENGINEERING
+    </text>
+  </g>
+
+  <!-- Project Title & Subtitle -->
+  <text x="60" y="130" fill="url(#titleGrad)" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="52" font-weight="800" letter-spacing="-1.5">
+    PulseStream
+  </text>
+  <text x="60" y="168" fill="#94a3b8" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="20" font-weight="500" letter-spacing="0.2">
+    Distributed Event Analytics &amp; Reliability Platform
+  </text>
+
+  <!-- Architectural Mission Box -->
+  <text x="60" y="210" fill="#cbd5e1" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="15" font-weight="400">
+    A portfolio-grade streaming data engine turning raw, noisy HTTP telemetry into reconciled,
+  </text>
+  <text x="60" y="232" fill="#cbd5e1" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="15" font-weight="400">
+    service-level analytics under real-world failures, duplicate deliveries, and controlled recovery.
+  </text>
+
+  <!-- Tech Feature Cards on Right Side -->
+  <g transform="translate(820, 45)">
+    <!-- Card 1: Partitioned Log -->
+    <rect x="0" y="0" width="320" height="68" rx="10" fill="#1e293b" fill-opacity="0.75" stroke="#334155" stroke-width="1" />
+    <circle cx="34" cy="34" r="16" fill="#0284c7" fill-opacity="0.2" />
+    <text x="34" y="39" text-anchor="middle" fill="#38bdf8" font-family="system-ui" font-size="14" font-weight="bold">&#9889;</text>
+    <text x="62" y="28" fill="#f8fafc" font-family="system-ui" font-size="13" font-weight="600">Partitioned Ingestion Log</text>
+    <text x="62" y="48" fill="#94a3b8" font-family="system-ui" font-size="11">Redpanda &bull; 3 Partitions &bull; Bounded Batches</text>
+
+    <!-- Card 2: Dual Deduplication -->
+    <rect x="0" y="80" width="320" height="68" rx="10" fill="#1e293b" fill-opacity="0.75" stroke="#334155" stroke-width="1" />
+    <circle cx="34" cy="114" r="16" fill="#10b981" fill-opacity="0.2" />
+    <text x="34" y="119" text-anchor="middle" fill="#34d399" font-family="system-ui" font-size="14" font-weight="bold">&#10003;</text>
+    <text x="62" y="108" fill="#f8fafc" font-family="system-ui" font-size="13" font-weight="600">Dual-Horizon Deduplication</text>
+    <text x="62" y="128" fill="#94a3b8" font-family="system-ui" font-size="11">Sink Retries &bull; 7-Day Logical ID Dedup</text>
+
+    <!-- Card 3: dbt Analytics -->
+    <rect x="0" y="160" width="320" height="68" rx="10" fill="#1e293b" fill-opacity="0.75" stroke="#334155" stroke-width="1" />
+    <circle cx="34" cy="194" r="16" fill="#f59e0b" fill-opacity="0.2" />
+    <text x="34" y="199" text-anchor="middle" fill="#fbbf24" font-family="system-ui" font-size="14" font-weight="bold">&#10753;</text>
+    <text x="62" y="188" fill="#f8fafc" font-family="system-ui" font-size="13" font-weight="600">Columnar dbt Analytical Marts</text>
+    <text x="62" y="208" fill="#94a3b8" font-family="system-ui" font-size="11">ClickHouse MergeTree &bull; t-digest Percentiles</text>
+  </g>
+
+  <!-- Bottom Key Metric Pills -->
+  <g transform="translate(60, 355)">
+    <rect x="0" y="0" width="165" height="36" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1" />
+    <text x="14" y="22" fill="#94a3b8" font-family="system-ui" font-size="11" font-weight="500">Processing Semantics:</text>
+    <text x="122" y="22" fill="#38bdf8" font-family="system-ui" font-size="11" font-weight="700">At-Least-Once</text>
+
+    <rect x="180" y="0" width="180" height="36" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1" />
+    <text x="194" y="22" fill="#94a3b8" font-family="system-ui" font-size="11" font-weight="500">Late Correction:</text>
+    <text x="278" y="22" fill="#34d399" font-family="system-ui" font-size="11" font-weight="700">15-Minute Window</text>
+
+    <rect x="375" y="0" width="175" height="36" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1" />
+    <text x="389" y="22" fill="#94a3b8" font-family="system-ui" font-size="11" font-weight="500">Failure Architecture:</text>
+    <text x="494" y="22" fill="#fbbf24" font-family="system-ui" font-size="11" font-weight="700">DLQ + Replay</text>
+
+    <rect x="565" y="0" width="180" height="36" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1" />
+    <text x="579" y="22" fill="#94a3b8" font-family="system-ui" font-size="11" font-weight="500">Reconciliation Loss:</text>
+    <text x="690" y="22" fill="#38bdf8" font-family="system-ui" font-size="11" font-weight="700">0 Mismatch</text>
+  </g>
+</svg>

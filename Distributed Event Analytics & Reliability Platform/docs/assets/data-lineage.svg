@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" width="100%" height="100%">
+  <defs>
+    <linearGradient id="nodeBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+  </defs>
+
+  <rect width="1100" height="520" rx="14" fill="#0b0f19" stroke="#1e293b" stroke-width="1.5" />
+
+  <!-- Header -->
+  <text x="40" y="38" fill="#f8fafc" font-family="system-ui" font-size="20" font-weight="700">PulseStream &bull; dbt Data Lineage &amp; Deduplication Flow</text>
+  <text x="40" y="58" fill="#94a3b8" font-family="system-ui" font-size="12">Physical sink-retry filtering &bull; Logical event deduplication &bull; Conformed service marts</text>
+
+  <!-- COLUMN 1: Sources -->
+  <g transform="translate(30, 90)">
+    <text x="80" y="0" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11" font-weight="700" letter-spacing="1">SOURCES</text>
+    
+    <rect y="15" width="160" height="60" rx="8" fill="url(#nodeBg)" stroke="#d97706" stroke-width="1.2" />
+    <text x="80" y="42" text-anchor="middle" fill="#fef3c7" font-family="system-ui" font-size="10" font-weight="bold">raw_event_deliveries</text>
+    <text x="80" y="58" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="9">ClickHouse MergeTree</text>
+
+    <rect y="125" width="160" height="60" rx="8" fill="url(#nodeBg)" stroke="#ef4444" stroke-width="1.2" />
+    <text x="80" y="152" text-anchor="middle" fill="#fee2e2" font-family="system-ui" font-size="10" font-weight="bold">raw_dlq_records</text>
+    <text x="80" y="168" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="9">ClickHouse DLQ Archive</text>
+  </g>
+
+  <!-- Arrows 1 -> 2 -->
+  <line x1="190" y1="135" x2="230" y2="135" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="190" y1="245" x2="230" y2="245" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+  <!-- COLUMN 2: Staging -->
+  <g transform="translate(235, 90)">
+    <text x="85" y="0" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11" font-weight="700" letter-spacing="1">STAGING</text>
+    
+    <rect y="15" width="170" height="60" rx="8" fill="url(#nodeBg)" stroke="#38bdf8" stroke-width="1.2" />
+    <text x="85" y="40" text-anchor="middle" fill="#e0f2fe" font-family="system-ui" font-size="10" font-weight="bold">stg_http_event_deliveries</text>
+    <text x="85" y="56" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="9">Typed, Renamed, Validated</text>
+
+    <rect y="125" width="170" height="60" rx="8" fill="url(#nodeBg)" stroke="#38bdf8" stroke-width="1.2" />
+    <text x="85" y="150" text-anchor="middle" fill="#e0f2fe" font-family="system-ui" font-size="10" font-weight="bold">stg_dlq_deliveries</text>
+    <text x="85" y="166" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="9">Failure Codes &amp; Metadata</text>
+  </g>
+
+  <!-- Arrow 2 -> 3 -->
+  <line x1="405" y1="135" x2="445" y2="135" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+  <!-- COLUMN 3: Intermediate (Deduplication) -->
+  <g transform="translate(450, 90)">
+    <text x="95" y="0" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11" font-weight="700" letter-spacing="1">INTERMEDIATE (DEDUP)</text>
+    
+    <!-- Physical Dedup -->
+    <rect y="15" width="190" height="65" rx="8" fill="url(#nodeBg)" stroke="#10b981" stroke-width="1.2" />
+    <text x="95" y="38" text-anchor="middle" fill="#d1fae5" font-family="system-ui" font-size="10" font-weight="bold">int_broker_delivery_dedup</text>
+    <text x="95" y="54" text-anchor="middle" fill="#6ee7b7" font-family="system-ui" font-size="9">&bull; Physical Sink Retry Filter</text>
+    <text x="95" y="68" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Unique (topic, partition, offset)</text>
+
+    <!-- Logical Dedup -->
+    <rect y="95" width="190" height="65" rx="8" fill="url(#nodeBg)" stroke="#10b981" stroke-width="1.2" />
+    <text x="95" y="118" text-anchor="middle" fill="#d1fae5" font-family="system-ui" font-size="10" font-weight="bold">int_canonical_http_events</text>
+    <text x="95" y="134" text-anchor="middle" fill="#6ee7b7" font-family="system-ui" font-size="9">&bull; Logical Event ID Dedup</text>
+    <text x="95" y="148" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">7-Day Suppression Horizon</text>
+
+    <!-- Dedup Audit -->
+    <rect y="175" width="190" height="50" rx="8" fill="url(#nodeBg)" stroke="#818cf8" stroke-width="1.2" />
+    <text x="95" y="196" text-anchor="middle" fill="#e0e7ff" font-family="system-ui" font-size="9" font-weight="bold">int_http_event_dedup_audit</text>
+    <text x="95" y="212" text-anchor="middle" fill="#a5b4fc" font-family="system-ui" font-size="8">Audit Flagged Logical Duplicates</text>
+  </g>
+
+  <!-- Connectors from Staging to Intermediate -->
+  <line x1="545" y1="80" x2="545" y2="95" stroke="#38bdf8" stroke-width="1.5" />
+  <line x1="545" y1="160" x2="545" y2="175" stroke="#38bdf8" stroke-width="1.5" />
+
+  <!-- Arrow 3 -> 4 -->
+  <line x1="640" y1="130" x2="685" y2="130" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+  <!-- COLUMN 4: Facts & Dimensions -->
+  <g transform="translate(690, 90)">
+    <text x="90" y="0" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11" font-weight="700" letter-spacing="1">FACTS &amp; DIMENSIONS</text>
+    
+    <rect y="15" width="180" height="55" rx="8" fill="url(#nodeBg)" stroke="#f59e0b" stroke-width="1.2" />
+    <text x="90" y="38" text-anchor="middle" fill="#fef3c7" font-family="system-ui" font-size="10" font-weight="bold">fct_http_requests</text>
+    <text x="90" y="54" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="9">Grain: 1 Canonical event_id</text>
+
+    <rect y="85" width="180" height="65" rx="8" fill="url(#nodeBg)" stroke="#f59e0b" stroke-width="1.2" />
+    <text x="90" y="108" text-anchor="middle" fill="#fef3c7" font-family="system-ui" font-size="10" font-weight="bold">fct_service_minute_metrics</text>
+    <text x="90" y="124" text-anchor="middle" fill="#fcd34d" font-family="system-ui" font-size="9">Grain: service &times; UTC minute</text>
+    <text x="90" y="138" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">insert_overwrite date partition</text>
+
+    <rect y="165" width="180" height="55" rx="8" fill="url(#nodeBg)" stroke="#f59e0b" stroke-width="1.2" />
+    <text x="90" y="188" text-anchor="middle" fill="#fef3c7" font-family="system-ui" font-size="10" font-weight="bold">fct_dlq_events</text>
+    <text x="90" y="204" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="9">Grain: 1 DLQ broker coord</text>
+
+    <rect y="235" width="180" height="45" rx="8" fill="url(#nodeBg)" stroke="#0284c7" stroke-width="1.2" />
+    <text x="90" y="256" text-anchor="middle" fill="#bae6fd" font-family="system-ui" font-size="10" font-weight="bold">dim_service</text>
+    <text x="90" y="270" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Grain: 1 row / canonical service</text>
+  </g>
+
+  <!-- Arrow 4 -> 5 -->
+  <line x1="870" y1="120" x2="910" y2="120" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+  <!-- COLUMN 5: Production Marts -->
+  <g transform="translate(915, 90)">
+    <text x="80" y="0" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11" font-weight="700" letter-spacing="1">PRODUCTION MARTS</text>
+    
+    <rect y="15" width="165" height="75" rx="8" fill="url(#nodeBg)" stroke="#10b981" stroke-width="1.5" />
+    <text x="82" y="38" text-anchor="middle" fill="#d1fae5" font-family="system-ui" font-size="10" font-weight="bold">mart_service_reliability</text>
+    <text x="82" y="54" text-anchor="middle" fill="#6ee7b7" font-family="system-ui" font-size="9">Requests &bull; 5xx Rate</text>
+    <text x="82" y="70" text-anchor="middle" fill="#6ee7b7" font-family="system-ui" font-size="9">t-digest p50/p95/p99 ms</text>
+
+    <rect y="105" width="165" height="75" rx="8" fill="url(#nodeBg)" stroke="#10b981" stroke-width="1.5" />
+    <text x="82" y="128" text-anchor="middle" fill="#d1fae5" font-family="system-ui" font-size="10" font-weight="bold">mart_pipeline_health</text>
+    <text x="82" y="144" text-anchor="middle" fill="#6ee7b7" font-family="system-ui" font-size="9">DLQ Count &bull; Duplicates</text>
+    <text x="82" y="160" text-anchor="middle" fill="#6ee7b7" font-family="system-ui" font-size="9">Processing Delay (p50/p95)</text>
+
+    <rect y="195" width="165" height="60" rx="8" fill="url(#nodeBg)" stroke="#f59e0b" stroke-width="1.2" />
+    <text x="82" y="218" text-anchor="middle" fill="#fef3c7" font-family="system-ui" font-size="10" font-weight="bold">mart_late_events</text>
+    <text x="82" y="234" text-anchor="middle" fill="#fbbf24" font-family="system-ui" font-size="9">Events &gt;15 min delayed</text>
+    <text x="82" y="246" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Explicit Backfill Target</text>
+  </g>
+
+  <!-- Bottom Informational Bar -->
+  <g transform="translate(30, 440)">
+    <rect width="1050" height="50" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+    <text x="25" y="22" fill="#38bdf8" font-family="system-ui" font-size="11" font-weight="bold">Reconciliation Invariant Guaranteed by Lineage:</text>
+    <text x="25" y="38" fill="#cbd5e1" font-family="system-ui" font-size="10">
+      Logical Source Records = Valid Logical Deliveries + DLQ Records &nbsp;&bull;&nbsp; Valid Deliveries = Canonical Unique Events + Duplicate Deliveries
+    </text>
+    <text x="760" y="30" fill="#34d399" font-family="system-ui" font-size="11" font-weight="bold">&#10003; 0 Unexplained Discrepancy</text>
+  </g>
+</svg>
